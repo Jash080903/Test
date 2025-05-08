@@ -2,6 +2,7 @@ name: Terraform deploy
 on:
   push:
     branches: [branch3]
+    paths-ignore: [.github/workflows]
 
 jobs:
   terraform:

@@ -3,7 +3,7 @@ on:
   push:
     branches: [branch3]
     paths-ignore:
-      - '.github/workflows' #Exclude when updating the pipelines
+      - '.github/workflows/**' #Exclude when updating the pipelines
 
 jobs:
   terraform:

@@ -1,15 +1,9 @@
 name: Terraform deploy
 on:
   push:
-<<<<<<< HEAD:.github/workflows/test.yml
     branches: [branch3]
     paths-ignore:
       - '.github/workflows/**' #Exclude when updating the pipelines
-=======
-    branches: [main]
-    paths-ignore:
-      - '.github/workflows/**'
->>>>>>> e22486c050b97cc013eda0ce24cd1f7f919677b5:.github/workflows/main.yml
 
 jobs:
   terraform:

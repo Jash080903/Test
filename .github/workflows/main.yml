@@ -1,55 +1,43 @@
-name: Terraform deploy test
+name: Terraform Azure Deployment
+
 on:
-  workflow_dispatch:
   push:
-    branches: [main]
-    paths-ignore:
-      - '.github/workflows/**' #Exclude when updating the pipelines
+    branches:
+      - main
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: Terraform CI/CD
     runs-on: ubuntu-latest
+    env:
+      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
 
     steps:
-      - name: 'Checkout'
+      # Checkout the repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: 'Terraform Setup'
+      # Install Terraform
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-      - name: Azure Login
-        uses: Azure/login@v1
         with:
-          credentials: ${{ secrets.AZURE_CREDENTIALS }}
-        env:
-          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+          terraform_version: 1.6.0
 
-      - name: 'Terraform Init'
-        env:
-          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: terraform init
+      # Initialize Terraform
+      - name: Terraform Init
+        run: terraform init 
 
-      - name: 'Terraform Plan'
-        env:
-          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
+      # Validate Terraform code
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Generate Terraform Plan
+      - name: Terraform Plan
         run: terraform plan
-      
-      - name: 'Terraform Apply'
-        env:
-          ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-          ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-          ARM_SUBSCRIPTION_ID: ${{ secrets.SUBSCRIPTION_ID }}
-          ARM_TENANT_ID: ${{ secrets.TENANT_ID }}
-        run: terraform Apply -auto-approve
 
-    
-
+      # Apply Terraform changes (only on push to main)
+      - name: Terraform Apply
+        run: terraform apply -auto-approve

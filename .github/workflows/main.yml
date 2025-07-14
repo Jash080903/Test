@@ -4,11 +4,17 @@ on:
   push:
     branches:
       - main
+    paths:
+      - './Module1/**'   
 
 jobs:
   terraform:
     name: Terraform CI/CD
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./Module1
     env:
       ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}

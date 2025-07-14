@@ -1,6 +1,7 @@
 name: Terraform Azure Deployment
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main

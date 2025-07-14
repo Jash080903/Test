@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - './Module1/**'   
+      - './Module1'   
 
 jobs:
   terraform:

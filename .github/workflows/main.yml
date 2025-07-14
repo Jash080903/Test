@@ -1,4 +1,4 @@
-name: Terraform deploy
+name: Terraform deploy test
 on:
   push:
     branches: [branch3]
@@ -33,6 +33,6 @@ jobs:
       
       -name: 'Terraform Apply'
        run: Terraform Apply
-       
+
     
 

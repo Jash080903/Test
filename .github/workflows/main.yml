@@ -1,16 +1,15 @@
 name: Terraform Azure Deployment
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
-    paths:
-      - './Module1'   
+    paths-ignore:
+      - '.github/workflows/**'  
 
 jobs:
   terraform:
-    name: Terraform CI/CD
+    name: Terraform Deployment
     runs-on: ubuntu-latest
     defaults:
       run:

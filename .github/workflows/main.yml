@@ -10,16 +10,17 @@ jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./Module1
+
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v4
 
       - name: 'Terraform Setup'
         uses: hashicorp/setup-terraform@v3
-
+      - name: Azure Login
+        uses: Azure/login@v1
+        with:
+          credentials: ${{ secrets.AZURE_CREDENTIALS }}
         env:
           ARM_CLIENT_ID: ${{ secrets.CLIENT_ID }}
           ARM_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
